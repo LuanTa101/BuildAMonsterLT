@@ -31,9 +31,10 @@ class Monster extends Phaser.Scene {
         this.mouthY = 350;
 
         //accessory
-        this.access1 = 400;
-
-        
+        this.noseX = 400;
+        this.noseY = 300;
+        this.hornX = 410;
+        this.hornY = 155;
     }
 
     // Use preload to load art and sound assets before the scene starts running.
@@ -67,6 +68,7 @@ class Monster extends Phaser.Scene {
         //left arm
         my.sprite.leftArm = this.add.sprite(this.leftArmX, this.leftArmY, "monsterParts", "arm_whiteA.png");
         my.sprite.leftArm.flipX = true;
+        my.sprite.leftArm.setDepth(2);
         //right leg
         my.sprite.rightLeg = this.add.sprite(this.rightLegX, this.rightLegY, "monsterParts", "leg_yellowA.png");
         //left leg
@@ -78,16 +80,52 @@ class Monster extends Phaser.Scene {
         //smile mouth 
         my.sprite.mouth = this.add.sprite(this.mouthX, this.mouthY, "monsterParts", "mouth_closed_happy.png");
         //fangs mouth
-        my.sprite.mouth1 = this.add.sprite(this.mouthX, this.mouthY, "monsterParts", "mouth_closed_fangs.png");
-        my.sprite.mouth1.visible = false;
+        my.sprite.fangs = this.add.sprite(this.mouthX, this.mouthY, "monsterParts", "mouth_closed_fangs.png");
+        my.sprite.fangs.visible = false;
+        //accessories
+        my.sprite.nose = this.add.sprite(this.noseX, this.noseY, "monsterParts", "nose_brown.png");
+        my.sprite.horn = this.add.sprite(this.hornX, this.hornY, "monsterParts", "detail_red_antenna_large.png");
 
+        //Event input: smile
+        let sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        sKey.on('down', (key, event) => {
+            console.log("S key pressed");
+            my.sprite.mouth.visible = true;
+            my.sprite.fangs.visible = false;
+        });
+
+        //Event input: smile
+        let fKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        fKey.on('down', (key, event) => {
+            console.log("F key pressed");
+            my.sprite.mouth.visible = false;
+            my.sprite.fangs.visible = true;
+        });
+
+        //Polling Input: movement
+        this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         
     }
 
     update() {
         let my = this.my;    // create an alias to this.my for readability
-
-       
+        //move left
+        if (this.aKey.isDown) {
+            for (let part in my.sprite) {
+                if (my.sprite.hasOwnProperty(part)) {
+                    my.sprite[part].x -= 2; 
+                }
+            }
+        }
+        // move right
+        if (this.dKey.isDown) {
+            for (let part in my.sprite) {
+                if (my.sprite.hasOwnProperty(part)) {
+                    my.sprite[part].x += 2; 
+                }
+            }
+        }
     }
 
 }

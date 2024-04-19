@@ -94,7 +94,7 @@ class Monster extends Phaser.Scene {
             my.sprite.fangs.visible = false;
         });
 
-        //Event input: smile
+        //Event input: fangs
         let fKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         fKey.on('down', (key, event) => {
             console.log("F key pressed");
